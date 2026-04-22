@@ -21,6 +21,7 @@ class OrderService:
         order_type: str,
         quantity: Decimal,
         price: Decimal | None = None,
+        stop_price: Decimal | None = None,
     ) -> dict:
         params = {
             "symbol": symbol,
@@ -31,6 +32,11 @@ class OrderService:
 
         if order_type == "LIMIT" and price is not None:
             params["price"] = self._format_decimal(price)
+            params["timeInForce"] = "GTC"
+        elif order_type == "STOP_LIMIT" and price is not None and stop_price is not None:
+            params["type"] = "STOP"
+            params["price"] = self._format_decimal(price)
+            params["stopPrice"] = self._format_decimal(stop_price)
             params["timeInForce"] = "GTC"
 
         logger.info("API request: %s", params)
