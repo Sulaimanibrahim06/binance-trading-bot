@@ -43,7 +43,8 @@ class OrderService:
 
         try:
             response = self.client.place_order(**params)
-            enriched_response = self._attach_avg_price(response)
+            enriched_response = self._normalize_order_response(response)
+            enriched_response = self._attach_avg_price(enriched_response)
             logger.info("API response: %s", enriched_response)
             return enriched_response
         except BinanceAPIException as exc:
@@ -81,5 +82,20 @@ class OrderService:
                 response["avgPrice"] = format(avg_price.normalize(), "f")
         except (InvalidOperation, ZeroDivisionError):
             logger.debug("Could not calculate avgPrice from Binance response: %s", response)
+
+        return response
+
+    @staticmethod
+    def _normalize_order_response(response: dict) -> dict:
+        if "orderId" in response:
+            return response
+
+        if "algoId" in response:
+            normalized = dict(response)
+            normalized["orderId"] = response.get("algoId")
+            normalized["status"] = response.get("algoStatus", "NEW")
+            normalized["executedQty"] = response.get("executedQty", "0.0000")
+            normalized["avgPrice"] = response.get("avgPrice", "0.00")
+            return normalized
 
         return response

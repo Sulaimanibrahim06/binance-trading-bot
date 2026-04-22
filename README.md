@@ -7,6 +7,7 @@ Small Python application for placing `MARKET`, `LIMIT`, and `STOP_LIMIT` orders 
 - Places `MARKET`, `LIMIT`, and `STOP_LIMIT` orders on Binance Futures Testnet
 - Supports both `BUY` and `SELL`
 - Validates CLI input before sending requests
+- Includes an enhanced CLI UX with examples and clear validation messages
 - Logs API requests, responses, and errors to `logs/trading.log`
 - Handles invalid input, missing credentials, Binance API errors, and network failures
 - Prints a clear request summary and response summary in the terminal
@@ -115,7 +116,7 @@ SUCCESS: Order placed successfully.
 
 - Runtime log file: `logs/trading.log`
 - The log captures request payloads, API responses, and stack traces for failures
-- For submission, include copies of one successful `MARKET` order log and one successful `LIMIT` order log
+- Sample submission logs are included in `docs/logs/market-order.log` and `docs/logs/limit-order.log`
 - If you showcase the bonus feature, you can also include one `STOP_LIMIT` log entry or a screenshot of the UI
 
 ## Assumptions
@@ -134,5 +135,6 @@ The following local checks were completed:
 - UI module imports successfully
 - Input validation catches malformed arguments before any API call
 - Dependencies are installed in the local virtual environment
+- One `MARKET` order and one `LIMIT` order were placed successfully on Binance Futures Testnet
 
 Live order placement requires valid Binance Futures Testnet credentials in `.env`.
